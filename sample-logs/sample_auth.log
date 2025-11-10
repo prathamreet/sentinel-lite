@@ -1,0 +1,9 @@
+Jan 15 10:23:14 server1 sshd[12345]: Failed password for admin from 192.168.1.50 port 22 ssh2
+Jan 15 10:23:18 server1 sshd[12346]: Failed password for admin from 192.168.1.50 port 22 ssh2
+Jan 15 10:23:22 server1 sshd[12347]: Failed password for admin from 192.168.1.50 port 22 ssh2
+Jan 15 10:23:26 server1 sshd[12348]: Failed password for admin from 192.168.1.50 port 22 ssh2
+Jan 15 10:23:30 server1 sshd[12349]: Failed password for admin from 192.168.1.50 port 22 ssh2
+Jan 15 10:23:35 server1 sshd[12350]: Accepted password for admin from 192.168.1.50 port 22 ssh2
+Jan 15 10:24:10 server1 sudo: admin : TTY=pts/0 ; PWD=/home/admin ; USER=root ; COMMAND=/bin/bash
+Jan 15 10:25:30 server1 kernel: rm -rf /var/log/auth.log
+Jan 15 02:15:45 server2 sshd[22333]: Accepted password for root from 10.0.0.100 port 22 ssh2

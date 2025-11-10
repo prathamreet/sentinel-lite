@@ -1,0 +1,8 @@
+2024-01-15 08:30:15 ERROR User login failed for user: administrator from IP: 172.16.0.50
+2024-01-15 08:30:20 ERROR User login failed for user: administrator from IP: 172.16.0.50
+2024-01-15 08:30:25 ERROR User login failed for user: administrator from IP: 172.16.0.50
+2024-01-15 08:30:35 INFO User login successful for user: administrator from IP: 172.16.0.50
+2024-01-15 08:31:10 WARNING Privilege elevation detected for user: administrator
+2024-01-15 08:32:00 CRITICAL File deletion detected: C:\Windows\System32\config\SAM
+2024-01-15 03:45:22 WARNING Unusual access time detected for user: backupuser
+
