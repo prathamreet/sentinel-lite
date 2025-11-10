@@ -28,7 +28,11 @@ function AlertPanel({ alerts }) {
       <div className="alerts-container">
         {filteredAlerts.length === 0 ? (
           <div className="empty-state">
+<<<<<<< HEAD
             <h3> No alerts found</h3>
+=======
+            <h3>No alerts found</h3>
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
             <p>Your system looks secure!</p>
           </div>
         ) : (

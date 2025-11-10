@@ -20,7 +20,11 @@ function LogTable({ logs }) {
   return (
     <div className="log-table-container">
       <div className="table-header">
+<<<<<<< HEAD
         <h2> Raw Log Entries</h2>
+=======
+        <h2>Raw Log Entries</h2>
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
         <input
           type="text"
           placeholder="🔍 Search logs..."

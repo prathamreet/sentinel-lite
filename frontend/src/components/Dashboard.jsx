@@ -70,8 +70,13 @@ function Dashboard({ stats, alerts, logs }) {
             </div>
             <p className="alert-description">{alert.description}</p>
             <div className="alert-footer">
+<<<<<<< HEAD
               <span> {alert.timestamp}</span>
               <span> {alert.ip_address || 'N/A'}</span>
+=======
+              <span>{alert.timestamp}</span>
+              <span>{alert.ip_address || 'N/A'}</span>
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
             </div>
           </div>
         ))}

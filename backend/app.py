@@ -106,6 +106,6 @@ def clear_data():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    print("🛡️  LogWatch Sentinel Backend Starting...")
-    print("📡 Server running on http://localhost:5000")
+    print("LogWatch Sentinel Backend Starting...")
+    print("Server running on http://localhost:5000")
     app.run(debug=True, port=5000)

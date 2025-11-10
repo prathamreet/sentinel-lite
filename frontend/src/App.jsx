@@ -28,9 +28,15 @@ function App() {
     try {
       await axios.post(`${API_URL}/upload`, formData);
       await analyzeData();
+<<<<<<< HEAD
       alert(' Logs uploaded and analyzed successfully!');
     } catch (error) {
       alert(' Error uploading file: ' + error.message);
+=======
+      alert('Logs uploaded and analyzed successfully!');
+    } catch (error) {
+      alert('Error uploading file: ' + error.message);
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
     } finally {
       setLoading(false);
     }
@@ -64,9 +70,15 @@ function App() {
         setAlerts([]);
         setStats({});
         setTimeline([]);
+<<<<<<< HEAD
         alert(' All data cleared');
       } catch (error) {
         alert(' Error clearing data');
+=======
+        alert('All data cleared');
+      } catch (error) {
+        alert('Error clearing data');
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
       }
     }
   };
@@ -84,15 +96,24 @@ function App() {
       link.click();
       link.remove();
     } catch (error) {
+<<<<<<< HEAD
       alert(' Error generating report');
+=======
+      alert('Error generating report');
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
     }
   };
 
   useEffect(() => {
     // Check backend connection
     axios.get(`${API_URL}/health`)
+<<<<<<< HEAD
       .then(() => console.log('✅ Backend connected'))
       .catch(() => alert(' Backend not running! Start Python server first.'));
+=======
+      .then(() => console.log('Backend connected'))
+      .catch(() => alert('Backend not running! Start Python server first.'));
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
   }, []);
 
   return (
@@ -100,7 +121,12 @@ function App() {
       {/* Header */}
       <header className="header">
         <div className="header-left">
+<<<<<<< HEAD
           <h1>🛡️ LogWatch Sentinel</h1>
+=======
+          <h1>LogWatch Sentinel</h1>
+          <span className="version">v1.0.0 | Offline Mode</span>
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
         </div>
         <div className="header-right">
           <input
@@ -111,16 +137,27 @@ function App() {
             style={{ display: 'none' }}
           />
           <label htmlFor="file-upload" className="btn btn-primary">
+<<<<<<< HEAD
              Upload Logs
+=======
+            Upload Logs
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
           </label>
           <button onClick={analyzeData} className="btn btn-secondary" disabled={loading}>
             {loading ? ' Analyzing...' : ' Analyze'}
           </button>
           <button onClick={downloadReport} className="btn btn-success">
+<<<<<<< HEAD
              Export Report
           </button>
           <button onClick={handleClearData} className="btn btn-danger">
              Clear Data
+=======
+            Export Report
+          </button>
+          <button onClick={handleClearData} className="btn btn-danger">
+            Clear Data
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
           </button>
         </div>
       </header>
@@ -131,25 +168,41 @@ function App() {
           className={activeTab === 'dashboard' ? 'tab active' : 'tab'}
           onClick={() => setActiveTab('dashboard')}
         >
+<<<<<<< HEAD
            Dashboard
+=======
+          Dashboard
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
         </button>
         <button
           className={activeTab === 'alerts' ? 'tab active' : 'tab'}
           onClick={() => setActiveTab('alerts')}
         >
+<<<<<<< HEAD
            Alerts ({alerts.length})
+=======
+          Alerts ({alerts.length})
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
         </button>
         <button
           className={activeTab === 'timeline' ? 'tab active' : 'tab'}
           onClick={() => setActiveTab('timeline')}
         >
+<<<<<<< HEAD
            Attack Timeline
+=======
+          ⏱Attack Timeline
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
         </button>
         <button
           className={activeTab === 'logs' ? 'tab active' : 'tab'}
           onClick={() => setActiveTab('logs')}
         >
+<<<<<<< HEAD
            Raw Logs
+=======
+          Raw Logs
+>>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
         </button>
       </nav>
 
