@@ -8,7 +8,7 @@ function AttackTimeline({ timeline }) {
       
       {timeline.length === 0 ? (
         <div className="empty-state">
-          <h3>✅ No attack patterns detected</h3>
+          <h3>No attack patterns detected</h3>
           <p>Your system timeline looks clean!</p>
         </div>
       ) : (
