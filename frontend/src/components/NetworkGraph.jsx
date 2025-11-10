@@ -5,7 +5,7 @@ import React from 'react';
 function NetworkGraph() {
   return (
     <div style={{ padding: '2rem', textAlign: 'center' }}>
-      <h2>🌐 Network Visualization</h2>
+      <h2>Network Visualization</h2>
       <p>Coming soon in Phase 2...</p>
     </div>
   );

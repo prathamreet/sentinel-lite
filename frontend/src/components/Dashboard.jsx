@@ -61,7 +61,7 @@ function Dashboard({ stats, alerts, logs }) {
 
       {/* Recent Alerts */}
       <div className="recent-alerts">
-        <h2>🔥 Recent Critical Alerts</h2>
+        <h2>Recent Critical Alerts</h2>
         {alerts.slice(0, 5).map((alert, idx) => (
           <div key={idx} className={`alert-item ${alert.severity.toLowerCase()}`}>
             <div className="alert-header">
@@ -70,8 +70,8 @@ function Dashboard({ stats, alerts, logs }) {
             </div>
             <p className="alert-description">{alert.description}</p>
             <div className="alert-footer">
-              <span>⏰ {alert.timestamp}</span>
-              <span>🌐 {alert.ip_address || 'N/A'}</span>
+              <span> {alert.timestamp}</span>
+              <span> {alert.ip_address || 'N/A'}</span>
             </div>
           </div>
         ))}

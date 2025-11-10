@@ -135,16 +135,16 @@ class ThreatDetector:
         
         # Create narrative
         attack_stages = {
-            'port_scan': '🔍 Reconnaissance: Attacker scanned the network for vulnerabilities',
-            'brute_force': '🔨 Initial Access: Attempted to breach account security',
-            'privilege_escalation': '⚠️ Privilege Escalation: Gained elevated system access',
-            'file_deletion': '💀 Impact: Attempted to delete critical files',
-            'data_exfiltration': '📤 Exfiltration: Attempted to steal data',
-            'malware_indicator': '☣️ Malware: Malicious software detected'
+            'port_scan': ' Reconnaissance: Attacker scanned the network for vulnerabilities',
+            'brute_force': ' Initial Access: Attempted to breach account security',
+            'privilege_escalation': ' Privilege Escalation: Gained elevated system access',
+            'file_deletion': ' Impact: Attempted to delete critical files',
+            'data_exfiltration': 'Exfiltration: Attempted to steal data',
+            'malware_indicator': ' Malware: Malicious software detected'
         }
         
         for alert in sorted_alerts[:10]:  # Top 10 for timeline
-            stage = attack_stages.get(alert['type'], f"⚡ {alert['type'].replace('_', ' ').title()}")
+            stage = attack_stages.get(alert['type'], f" {alert['type'].replace('_', ' ').title()}")
             timeline.append({
                 'time': alert.get('timestamp'),
                 'stage': stage,

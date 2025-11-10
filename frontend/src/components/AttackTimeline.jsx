@@ -4,11 +4,11 @@ import './AttackTimeline.css';
 function AttackTimeline({ timeline }) {
   return (
     <div className="timeline-container">
-      <h2>⏱️ Attack Timeline Story</h2>
+      <h2> Attack Timeline Story</h2>
       
       {timeline.length === 0 ? (
         <div className="empty-state">
-          <h3>✅ No attack patterns detected</h3>
+          <h3> No attack patterns detected</h3>
           <p>Your system timeline looks clean!</p>
         </div>
       ) : (
