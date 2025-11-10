@@ -14,7 +14,7 @@ function Dashboard({ stats, alerts, logs }) {
       {/* Stats Cards */}
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-icon">📊</div>
+          {/* <div className="stat-icon">📊</div> */}
           <div className="stat-info">
             <h3>Total Logs</h3>
             <p className="stat-value">{logs.length.toLocaleString()}</p>
@@ -22,7 +22,7 @@ function Dashboard({ stats, alerts, logs }) {
         </div>
 
         <div className="stat-card critical">
-          <div className="stat-icon">🚨</div>
+          {/* <div className="stat-icon">🚨</div> */}
           <div className="stat-info">
             <h3>Critical Alerts</h3>
             <p className="stat-value">{criticalAlerts}</p>
@@ -30,7 +30,7 @@ function Dashboard({ stats, alerts, logs }) {
         </div>
 
         <div className="stat-card high">
-          <div className="stat-icon">⚠️</div>
+          {/* <div className="stat-icon">⚠️</div> */}
           <div className="stat-info">
             <h3>High Severity</h3>
             <p className="stat-value">{highAlerts}</p>
@@ -38,7 +38,7 @@ function Dashboard({ stats, alerts, logs }) {
         </div>
 
         <div className="stat-card medium">
-          <div className="stat-icon">ℹ️</div>
+          {/* <div className="stat-icon">ℹ️</div> */}
           <div className="stat-info">
             <h3>Medium Severity</h3>
             <p className="stat-value">{mediumAlerts}</p>
@@ -46,7 +46,7 @@ function Dashboard({ stats, alerts, logs }) {
         </div>
 
         <div className={`stat-card security-score ${securityScore > 70 ? 'good' : securityScore > 40 ? 'warning' : 'danger'}`}>
-          <div className="stat-icon">🛡️</div>
+          {/* <div className="stat-icon">🛡️</div> */}
           <div className="stat-info">
             <h3>Security Score</h3>
             <p className="stat-value">{securityScore}/100</p>
@@ -70,13 +70,8 @@ function Dashboard({ stats, alerts, logs }) {
             </div>
             <p className="alert-description">{alert.description}</p>
             <div className="alert-footer">
-<<<<<<< HEAD
-              <span> {alert.timestamp}</span>
-              <span> {alert.ip_address || 'N/A'}</span>
-=======
               <span>{alert.timestamp}</span>
               <span>{alert.ip_address || 'N/A'}</span>
->>>>>>> 85abb9c0ff3d02ed7d644169f9181eb73d556fcc
             </div>
           </div>
         ))}
