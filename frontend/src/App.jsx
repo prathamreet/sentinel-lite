@@ -28,9 +28,9 @@ function App() {
     try {
       await axios.post(`${API_URL}/upload`, formData);
       await analyzeData();
-      alert('✅ Logs uploaded and analyzed successfully!');
+      alert('Logs uploaded and analyzed successfully!');
     } catch (error) {
-      alert('❌ Error uploading file: ' + error.message);
+      alert('Error uploading file: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -64,9 +64,9 @@ function App() {
         setAlerts([]);
         setStats({});
         setTimeline([]);
-        alert('✅ All data cleared');
+        alert('All data cleared');
       } catch (error) {
-        alert('❌ Error clearing data');
+        alert('Error clearing data');
       }
     }
   };
@@ -84,15 +84,15 @@ function App() {
       link.click();
       link.remove();
     } catch (error) {
-      alert('❌ Error generating report');
+      alert('Error generating report');
     }
   };
 
   useEffect(() => {
     // Check backend connection
     axios.get(`${API_URL}/health`)
-      .then(() => console.log('✅ Backend connected'))
-      .catch(() => alert('⚠️ Backend not running! Start Python server first.'));
+      .then(() => console.log('Backend connected'))
+      .catch(() => alert('Backend not running! Start Python server first.'));
   }, []);
 
   return (
@@ -100,7 +100,7 @@ function App() {
       {/* Header */}
       <header className="header">
         <div className="header-left">
-          <h1>🛡️ LogWatch Sentinel</h1>
+          <h1>LogWatch Sentinel</h1>
           <span className="version">v1.0.0 | Offline Mode</span>
         </div>
         <div className="header-right">
@@ -112,16 +112,16 @@ function App() {
             style={{ display: 'none' }}
           />
           <label htmlFor="file-upload" className="btn btn-primary">
-            📁 Upload Logs
+            Upload Logs
           </label>
           <button onClick={analyzeData} className="btn btn-secondary" disabled={loading}>
             {loading ? '⏳ Analyzing...' : '🔍 Analyze'}
           </button>
           <button onClick={downloadReport} className="btn btn-success">
-            📄 Export Report
+            Export Report
           </button>
           <button onClick={handleClearData} className="btn btn-danger">
-            🗑️ Clear Data
+            Clear Data
           </button>
         </div>
       </header>
@@ -132,25 +132,25 @@ function App() {
           className={activeTab === 'dashboard' ? 'tab active' : 'tab'}
           onClick={() => setActiveTab('dashboard')}
         >
-          📊 Dashboard
+          Dashboard
         </button>
         <button
           className={activeTab === 'alerts' ? 'tab active' : 'tab'}
           onClick={() => setActiveTab('alerts')}
         >
-          🚨 Alerts ({alerts.length})
+          Alerts ({alerts.length})
         </button>
         <button
           className={activeTab === 'timeline' ? 'tab active' : 'tab'}
           onClick={() => setActiveTab('timeline')}
         >
-          ⏱️ Attack Timeline
+          ⏱Attack Timeline
         </button>
         <button
           className={activeTab === 'logs' ? 'tab active' : 'tab'}
           onClick={() => setActiveTab('logs')}
         >
-          📋 Raw Logs
+          Raw Logs
         </button>
       </nav>
 
