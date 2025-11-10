@@ -1,0 +1,140 @@
+.alert-panel {
+  padding: 1rem;
+}
+
+.alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.alert-header h2 {
+  color: #60a5fa;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1rem;
+  background: #1e293b;
+  border: 1px solid #475569;
+  color: #94a3b8;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.filter-btn.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.alerts-container {
+  display: grid;
+  gap: 1rem;
+}
+
+.alert-card {
+  background: #1e293b;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 5px solid #64748b;
+  transition: transform 0.3s ease;
+}
+
+.alert-card:hover {
+  transform: translateX(5px);
+}
+
+.alert-card.critical {
+  border-left-color: #ef4444;
+  background: linear-gradient(135deg, #1e293b 0%, #450a0a 100%);
+}
+
+.alert-card.high {
+  border-left-color: #f59e0b;
+  background: linear-gradient(135deg, #1e293b 0%, #451a03 100%);
+}
+
+.alert-card.medium {
+  border-left-color: #3b82f6;
+  background: linear-gradient(135deg, #1e293b 0%, #1e3a8a 100%);
+}
+
+.alert-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.alert-card-header h3 {
+  color: #e2e8f0;
+  font-size: 1.2rem;
+}
+
+.severity-badge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.severity-badge.critical {
+  background: #ef4444;
+  color: white;
+}
+
+.severity-badge.high {
+  background: #f59e0b;
+  color: white;
+}
+
+.severity-badge.medium {
+  background: #3b82f6;
+  color: white;
+}
+
+.alert-desc {
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+
+.alert-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #0f172a;
+  border-radius: 6px;
+}
+
+.alert-details div {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.alert-details strong {
+  color: #e2e8f0;
+}
+
+.alert-message {
+  padding: 1rem;
+  background: #0f172a;
+  border-radius: 6px;
+  color: #cbd5e1;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,134 @@
+.dashboard {
+  padding: 1rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid #475569;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.stat-icon {
+  font-size: 3rem;
+}
+
+.stat-info h3 {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #e2e8f0;
+}
+
+.stat-card.critical {
+  border-left: 4px solid #ef4444;
+}
+
+.stat-card.high {
+  border-left: 4px solid #f59e0b;
+}
+
+.stat-card.medium {
+  border-left: 4px solid #3b82f6;
+}
+
+.stat-card.security-score.good {
+  border-left: 4px solid #10b981;
+}
+
+.stat-card.security-score.warning {
+  border-left: 4px solid #f59e0b;
+}
+
+.stat-card.security-score.danger {
+  border-left: 4px solid #ef4444;
+}
+
+.charts-grid {
+  margin-bottom: 2rem;
+}
+
+.recent-alerts {
+  background: #1e293b;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #334155;
+}
+
+.recent-alerts h2 {
+  color: #60a5fa;
+  margin-bottom: 1rem;
+}
+
+.alert-item {
+  background: #0f172a;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #64748b;
+}
+
+.alert-item.critical {
+  border-left-color: #ef4444;
+}
+
+.alert-item.high {
+  border-left-color: #f59e0b;
+}
+
+.alert-item.medium {
+  border-left-color: #3b82f6;
+}
+
+.alert-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.alert-type {
+  font-weight: bold;
+  color: #e2e8f0;
+}
+
+.alert-severity {
+  background: #ef4444;
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.alert-description {
+  color: #cbd5e1;
+  margin-bottom: 0.5rem;
+}
+
+.alert-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
