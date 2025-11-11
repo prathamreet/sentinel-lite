@@ -5,7 +5,6 @@ import Dashboard from './components/Dashboard';
 import AlertPanel from './components/AlertPanel';
 import LogTable from './components/LogTable';
 import AttackTimeline from './components/AttackTimeline';
-import './App.css';
 
 const API_URL = 'http://localhost:5000';
 const socket = io(API_URL);
@@ -22,7 +21,7 @@ function App() {
   });
   const [timeline, setTimeline] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('overview');
   const [connectionStatus, setConnectionStatus] = useState('connecting');
 
   // WebSocket listeners
@@ -209,75 +208,106 @@ function App() {
   };
 
   return (
-    <div className="app">
+    <div className="h-screen bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden flex flex-col">
       {/* Header */}
-      <header className="header">
-        <div className="header-left">
-          <h1>🛡️ LogWatch Sentinel</h1>
-          <span className="version">v1.0.0 | LIVE MODE</span>
-          <span className={`status-badge ${connectionStatus}`}>
-            {connectionStatus === 'connected' ? '🟢 LIVE' : '🔴 OFFLINE'}
-          </span>
+      <header className="bg-slate-800 px-8 py-4 flex justify-between items-center border-b border-slate-600">
+        <div className="flex items-center space-x-6">
+          <h1 className="text-2xl font-bold text-white">LogWatch Sentinel</h1>
+          <span className="text-sm text-slate-400 font-medium">v1.0.0</span>
+          <div className="flex items-center space-x-2">
+            <div className={`w-2 h-2 rounded-full ${
+              connectionStatus === 'connected' 
+                ? 'bg-green-500' 
+                : connectionStatus === 'connecting'
+                ? 'bg-yellow-500'
+                : 'bg-red-500'
+            }`}></div>
+            <span className="text-sm text-slate-300 font-medium">
+              {connectionStatus === 'connected' ? 'LIVE' : connectionStatus === 'connecting' ? 'CONNECTING' : 'OFFLINE'}
+            </span>
+          </div>
         </div>
-        <div className="header-right">
-          <button onClick={handleRefresh} className="btn btn-secondary">
-            🔄 Refresh
+        <div className="flex space-x-3">
+          <button 
+            onClick={handleRefresh} 
+            className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded font-medium transition-colors duration-200"
+          >
+            Refresh
           </button>
-          <button onClick={downloadReport} className="btn btn-success">
-            📄 Export Report
+          <button 
+            onClick={downloadReport} 
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors duration-200"
+          >
+            Export Report
           </button>
-          <button onClick={handleClearData} className="btn btn-danger">
-            🗑️ Clear Data
+          <button 
+            onClick={handleClearData} 
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition-colors duration-200"
+          >
+            Clear Data
           </button>
         </div>
       </header>
 
       {/* Navigation Tabs */}
-      <nav className="tabs">
+      <nav className="bg-slate-800 px-8 flex space-x-1 border-b border-slate-600 flex-shrink-0">
         <button
-          className={activeTab === 'dashboard' ? 'tab active' : 'tab'}
-          onClick={() => setActiveTab('dashboard')}
+          className={`px-6 py-3 font-medium transition-all duration-200 border-b-2 ${
+            activeTab === 'overview' 
+              ? 'text-white border-blue-500 bg-slate-700' 
+              : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-700'
+          }`}
+          onClick={() => setActiveTab('overview')}
         >
-          📊 Dashboard
+          Overview
         </button>
         <button
-          className={activeTab === 'alerts' ? 'tab active' : 'tab'}
-          onClick={() => setActiveTab('alerts')}
+          className={`px-6 py-3 font-medium transition-all duration-200 border-b-2 relative ${
+            activeTab === 'security' 
+              ? 'text-white border-blue-500 bg-slate-700' 
+              : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-700'
+          }`}
+          onClick={() => setActiveTab('security')}
         >
-          🚨 Alerts ({alerts.length})
+          Security Analysis
           {alerts.filter(a => a.severity === 'CRITICAL').length > 0 && (
-            <span className="alert-badge">
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
               {alerts.filter(a => a.severity === 'CRITICAL').length}
             </span>
           )}
         </button>
-        <button
-          className={activeTab === 'timeline' ? 'tab active' : 'tab'}
-          onClick={() => setActiveTab('timeline')}
-        >
-          ⏱️ Attack Timeline
-        </button>
-        <button
-          className={activeTab === 'logs' ? 'tab active' : 'tab'}
-          onClick={() => setActiveTab('logs')}
-        >
-          📋 Live Logs ({logs.length})
-        </button>
       </nav>
 
       {/* Main Content */}
-      <main className="main-content">
-        {activeTab === 'dashboard' && (
-          <Dashboard stats={stats} alerts={alerts} logs={logs} />
+      <main className="flex-1 overflow-hidden">
+        {loading && (
+          <div className="flex justify-center items-center h-full">
+            <div className="text-xl text-slate-400">Loading...</div>
+          </div>
         )}
-        {activeTab === 'alerts' && (
-          <AlertPanel alerts={alerts} />
+        {!loading && activeTab === 'overview' && (
+          <div className="h-full flex">
+            {/* Dashboard Section */}
+            <div className="w-1/2 p-6 border-r border-slate-600 overflow-y-auto">
+              <Dashboard stats={stats} alerts={alerts} logs={logs} />
+            </div>
+            {/* Live Logs Section */}
+            <div className="w-1/2 p-6 overflow-y-auto">
+              <LogTable logs={logs} />
+            </div>
+          </div>
         )}
-        {activeTab === 'timeline' && (
-          <AttackTimeline timeline={timeline} />
-        )}
-        {activeTab === 'logs' && (
-          <LogTable logs={logs} />
+        {!loading && activeTab === 'security' && (
+          <div className="h-full flex">
+            {/* Alerts Section */}
+            <div className="w-1/2 p-6 border-r border-slate-600 overflow-y-auto">
+              <AlertPanel alerts={alerts} />
+            </div>
+            {/* Attack Timeline Section */}
+            <div className="w-1/2 p-6 overflow-y-auto">
+              <AttackTimeline timeline={timeline} />
+            </div>
+          </div>
         )}
       </main>
     </div>

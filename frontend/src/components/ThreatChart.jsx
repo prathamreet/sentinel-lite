@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import './ThreatChart.css';
 
 function ThreatChart({ stats, alerts }) {
   const [severityData, setSeverityData] = useState([]);
@@ -30,15 +29,20 @@ function ThreatChart({ stats, alerts }) {
   }, [stats, alerts]); // Re-run when stats or alerts change
 
   return (
-    <div className="threat-chart-container">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Severity Pie Chart */}
-      <div className="chart-card">
-        <h3>Threats by Severity</h3>
+      <div className="bg-slate-700 rounded-xl p-6">
+        <h3 className="text-xl font-bold text-white mb-6">Threats by Severity</h3>
         {severityData.reduce((sum, item) => sum + item.value, 0) === 0 ? (
-          <div className="empty-chart">
-            <p>✅ No threats detected yet</p>
-            <p style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
-              Charts will update in real-time as threats are detected
+          <div className="flex flex-col items-center justify-center h-80 text-center">
+            <div className="text-slate-500 mb-4">
+              <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <p className="text-lg text-slate-300 mb-2">No threats detected</p>
+            <p className="text-sm text-slate-400">
+              Charts will update as threats are detected
             </p>
           </div>
         ) : (
@@ -59,20 +63,32 @@ function ThreatChart({ stats, alerts }) {
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip 
+                contentStyle={{ 
+                  background: '#1e293b', 
+                  border: '1px solid #475569',
+                  borderRadius: '8px',
+                  color: '#e2e8f0'
+                }} 
+              />
             </PieChart>
           </ResponsiveContainer>
         )}
       </div>
 
       {/* Threat Type Bar Chart */}
-      <div className="chart-card">
-        <h3>Threats by Type</h3>
+      <div className="bg-slate-700 rounded-xl p-6">
+        <h3 className="text-xl font-bold text-white mb-6">Threats by Type</h3>
         {threatTypeData.length === 0 ? (
-          <div className="empty-chart">
-            <p>✅ No threats detected yet</p>
-            <p style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
-              Waiting for attack patterns...
+          <div className="flex flex-col items-center justify-center h-80 text-center">
+            <div className="text-slate-500 mb-4">
+              <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <p className="text-lg text-slate-300 mb-2">No threats detected</p>
+            <p className="text-sm text-slate-400">
+              Monitoring for attack patterns
             </p>
           </div>
         ) : (
@@ -86,13 +102,15 @@ function ThreatChart({ stats, alerts }) {
                 textAnchor="end" 
                 height={100}
                 interval={0}
+                fontSize={12}
               />
-              <YAxis stroke="#94a3b8" />
+              <YAxis stroke="#94a3b8" fontSize={12} />
               <Tooltip 
                 contentStyle={{ 
                   background: '#1e293b', 
                   border: '1px solid #475569',
-                  borderRadius: '6px'
+                  borderRadius: '8px',
+                  color: '#e2e8f0'
                 }} 
               />
               <Legend />
@@ -100,6 +118,7 @@ function ThreatChart({ stats, alerts }) {
                 dataKey="count" 
                 fill="#3b82f6"
                 animationDuration={500}
+                radius={[4, 4, 0, 0]}
               />
             </BarChart>
           </ResponsiveContainer>
