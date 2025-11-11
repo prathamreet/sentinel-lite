@@ -1,43 +1,139 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import io from 'socket.io-client';
 import Dashboard from './components/Dashboard';
 import AlertPanel from './components/AlertPanel';
 import LogTable from './components/LogTable';
-import ThreatChart from './components/ThreatChart';
 import AttackTimeline from './components/AttackTimeline';
 import './App.css';
 
 const API_URL = 'http://localhost:5000';
+const socket = io(API_URL);
 
 function App() {
   const [logs, setLogs] = useState([]);
   const [alerts, setAlerts] = useState([]);
-  const [stats, setStats] = useState({});
+  const [stats, setStats] = useState({
+    total_logs: 0,
+    total_alerts: 0,
+    alerts_by_severity: { CRITICAL: 0, HIGH: 0, MEDIUM: 0 },
+    by_severity: { CRITICAL: 0, HIGH: 0, MEDIUM: 0 },
+    by_type: {}
+  });
   const [timeline, setTimeline] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [connectionStatus, setConnectionStatus] = useState('connecting');
 
-  const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+  // WebSocket listeners
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('✅ Connected to live server');
+      setConnectionStatus('connected');
+    });
 
-    setLoading(true);
-    const formData = new FormData();
-    formData.append('file', file);
+    socket.on('disconnect', () => {
+      console.log('❌ Disconnected from server');
+      setConnectionStatus('disconnected');
+    });
 
-    try {
-      await axios.post(`${API_URL}/upload`, formData);
-      await analyzeData();
+    socket.on('new_alerts', (data) => {
+      console.log('🚨 New alerts received:', data);
+      
+      // Add new alerts to existing ones
+      setAlerts(prev => {
+        const combined = [...data.alerts, ...prev];
+        return combined.slice(0, 100); // Keep last 100
+      });
+      
+      // Update stats - CRITICAL FIX
+      setStats(prevStats => {
+        const newStats = { ...prevStats };
+        
+        // Update alert counts by severity
+        data.alerts.forEach(alert => {
+          const severity = alert.severity;
+          if (newStats.alerts_by_severity) {
+            newStats.alerts_by_severity[severity] = (newStats.alerts_by_severity[severity] || 0) + 1;
+          }
+          if (newStats.by_severity) {
+            newStats.by_severity[severity] = (newStats.by_severity[severity] || 0) + 1;
+          }
+          
+          // Update type counts
+          if (newStats.by_type) {
+            newStats.by_type[alert.type] = (newStats.by_type[alert.type] || 0) + 1;
+          }
+        });
+        
+        // Update total alerts
+        newStats.total_alerts = (newStats.total_alerts || 0) + data.alerts.length;
+        
+        return newStats;
+      });
+      
+      // Show notification for critical alerts
+      const critical = data.alerts.filter(a => a.severity === 'CRITICAL');
+      if (critical.length > 0) {
+        showNotification(`🚨 ${critical.length} CRITICAL ALERT(S) DETECTED!`);
+      }
+    });
 
-      alert('Logs uploaded and analyzed successfully!');
-    } catch (error) {
-      alert('Error uploading file: ' + error.message);
-    } finally {
-      setLoading(false);
+    socket.on('new_logs', (data) => {
+      console.log('📊 New logs received:', data.count);
+      
+      setLogs(prev => {
+        const combined = [...data.logs, ...prev];
+        return combined.slice(0, 1000); // Keep last 1000
+      });
+      
+      // Update log count
+      setStats(prevStats => ({
+        ...prevStats,
+        total_logs: (prevStats.total_logs || 0) + data.logs.length
+      }));
+    });
+
+    socket.on('stats_update', (data) => {
+      console.log('📈 Stats update received:', data);
+      
+      // Merge with existing stats to ensure all fields are present
+      setStats(prevStats => ({
+        ...prevStats,
+        ...data,
+        // Ensure by_severity exists for charts
+        by_severity: data.alerts_by_severity || data.by_severity || prevStats.by_severity || {},
+        by_type: data.by_type || prevStats.by_type || {}
+      }));
+    });
+
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+      socket.off('new_alerts');
+      socket.off('new_logs');
+      socket.off('stats_update');
+    };
+  }, []);
+
+  const showNotification = (message) => {
+    if (window.Notification && Notification.permission === 'granted') {
+      new Notification('LogWatch Sentinel', { body: message });
     }
   };
 
-  const analyzeData = async () => {
+  const requestNotificationPermission = () => {
+    if (window.Notification && Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+  };
+
+  useEffect(() => {
+    requestNotificationPermission();
+    loadInitialData();
+  }, []);
+
+  const loadInitialData = async () => {
     setLoading(true);
     try {
       const [logsRes, analysisRes, timelineRes] = await Promise.all([
@@ -46,15 +142,32 @@ function App() {
         axios.get(`${API_URL}/timeline`)
       ]);
 
-      setLogs(logsRes.data);
+      setLogs(logsRes.data || []);
       setAlerts(analysisRes.data.alerts || []);
-      setStats(analysisRes.data.stats || {});
+      
+      // Properly structure stats
+      const statsData = analysisRes.data.stats || {};
+      setStats({
+        total_logs: analysisRes.data.total_logs || 0,
+        total_alerts: (analysisRes.data.alerts || []).length,
+        alerts_by_severity: statsData.by_severity || { CRITICAL: 0, HIGH: 0, MEDIUM: 0 },
+        by_severity: statsData.by_severity || { CRITICAL: 0, HIGH: 0, MEDIUM: 0 },
+        by_type: statsData.by_type || {},
+        critical_count: statsData.critical_count || 0,
+        high_count: statsData.high_count || 0,
+        medium_count: statsData.medium_count || 0
+      });
+      
       setTimeline(timelineRes.data || []);
     } catch (error) {
-      console.error('Error analyzing data:', error);
+      console.error('Error loading data:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRefresh = () => {
+    loadInitialData();
   };
 
   const handleClearData = async () => {
@@ -63,11 +176,17 @@ function App() {
         await axios.post(`${API_URL}/clear`);
         setLogs([]);
         setAlerts([]);
-        setStats({});
+        setStats({
+          total_logs: 0,
+          total_alerts: 0,
+          alerts_by_severity: { CRITICAL: 0, HIGH: 0, MEDIUM: 0 },
+          by_severity: { CRITICAL: 0, HIGH: 0, MEDIUM: 0 },
+          by_type: {}
+        });
         setTimeline([]);
-        alert('All data cleared');
+        alert('✅ All data cleared');
       } catch (error) {
-        alert('Error clearing data');
+        alert('❌ Error clearing data');
       }
     }
   };
@@ -85,43 +204,30 @@ function App() {
       link.click();
       link.remove();
     } catch (error) {
-      alert('Error generating report');
+      alert('❌ Error generating report');
     }
   };
-
-  useEffect(() => {
-    // Check backend connection
-    axios.get(`${API_URL}/health`)
-      .then(() => console.log('Backend connected'))
-      .catch(() => alert('Backend not running! Start Python server first.'));
-  }, []);
 
   return (
     <div className="app">
       {/* Header */}
       <header className="header">
         <div className="header-left">
-          <h1>LogWatch Sentinel</h1>
+          <h1>🛡️ LogWatch Sentinel</h1>
+          <span className="version">v1.0.0 | LIVE MODE</span>
+          <span className={`status-badge ${connectionStatus}`}>
+            {connectionStatus === 'connected' ? '🟢 LIVE' : '🔴 OFFLINE'}
+          </span>
         </div>
         <div className="header-right">
-          <input
-            type="file"
-            id="file-upload"
-            accept=".log,.txt"
-            onChange={handleFileUpload}
-            style={{ display: 'none' }}
-          />
-          <label htmlFor="file-upload" className="btn btn-primary">
-             Upload Logs
-          </label>
-          <button onClick={analyzeData} className="btn btn-secondary" disabled={loading}>
-            {loading ? ' Analyzing...' : ' Analyze'}
+          <button onClick={handleRefresh} className="btn btn-secondary">
+            🔄 Refresh
           </button>
           <button onClick={downloadReport} className="btn btn-success">
-            Export Report
+            📄 Export Report
           </button>
           <button onClick={handleClearData} className="btn btn-danger">
-             Clear Data
+            🗑️ Clear Data
           </button>
         </div>
       </header>
@@ -132,25 +238,30 @@ function App() {
           className={activeTab === 'dashboard' ? 'tab active' : 'tab'}
           onClick={() => setActiveTab('dashboard')}
         >
-           Dashboard
+          📊 Dashboard
         </button>
         <button
           className={activeTab === 'alerts' ? 'tab active' : 'tab'}
           onClick={() => setActiveTab('alerts')}
         >
-           Alerts ({alerts.length})
+          🚨 Alerts ({alerts.length})
+          {alerts.filter(a => a.severity === 'CRITICAL').length > 0 && (
+            <span className="alert-badge">
+              {alerts.filter(a => a.severity === 'CRITICAL').length}
+            </span>
+          )}
         </button>
         <button
           className={activeTab === 'timeline' ? 'tab active' : 'tab'}
           onClick={() => setActiveTab('timeline')}
         >
-           Attack Timeline
+          ⏱️ Attack Timeline
         </button>
         <button
           className={activeTab === 'logs' ? 'tab active' : 'tab'}
           onClick={() => setActiveTab('logs')}
         >
-           Raw Logs
+          📋 Live Logs ({logs.length})
         </button>
       </nav>
 

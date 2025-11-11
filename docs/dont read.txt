@@ -1,0 +1,22 @@
+read the files. read README.md ps.md 
+
+and the files, i have build a prototype whihc works fine as a webapp.
+
+
+
+but problem is i need to upload the log files which dont make it a live monitoring system.
+
+
+
+so we have frontned runing, backend running python.
+
+can we have a srerver/service that mock live log of /sample-logs.
+
+so it output logs one by one. and backend read it and so on fronend .
+
+
+
+it should be real time on fontend tooo.
+
+
+

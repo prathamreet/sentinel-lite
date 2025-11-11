@@ -10,10 +10,27 @@
   padding: 1.5rem;
   border-radius: 12px;
   border: 1px solid #334155;
+  min-height: 350px;
 }
 
 .chart-card h3 {
   color: #60a5fa;
   margin-bottom: 1rem;
   font-size: 1.2rem;
+}
+
+/* Empty state styling */
+.empty-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-chart p:first-child {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
 }
