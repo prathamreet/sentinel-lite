@@ -27,17 +27,17 @@ function App() {
   // WebSocket listeners
   useEffect(() => {
     socket.on('connect', () => {
-      console.log('✅ Connected to live server');
+      console.log(' Connected to live server');
       setConnectionStatus('connected');
     });
 
     socket.on('disconnect', () => {
-      console.log('❌ Disconnected from server');
+      console.log(' Disconnected from server');
       setConnectionStatus('disconnected');
     });
 
     socket.on('new_alerts', (data) => {
-      console.log('🚨 New alerts received:', data);
+      console.log(' New alerts received:', data);
       
       // Add new alerts to existing ones
       setAlerts(prev => {
@@ -79,7 +79,7 @@ function App() {
     });
 
     socket.on('new_logs', (data) => {
-      console.log('📊 New logs received:', data.count);
+      console.log('New logs received:', data.count);
       
       setLogs(prev => {
         const combined = [...data.logs, ...prev];
@@ -94,7 +94,7 @@ function App() {
     });
 
     socket.on('stats_update', (data) => {
-      console.log('📈 Stats update received:', data);
+      console.log(' Stats update received:', data);
       
       // Merge with existing stats to ensure all fields are present
       setStats(prevStats => ({
@@ -183,9 +183,9 @@ function App() {
           by_type: {}
         });
         setTimeline([]);
-        alert('✅ All data cleared');
+        alert(' All data cleared');
       } catch (error) {
-        alert('❌ Error clearing data');
+        alert(' Error clearing data');
       }
     }
   };
@@ -203,7 +203,7 @@ function App() {
       link.click();
       link.remove();
     } catch (error) {
-      alert('❌ Error generating report');
+      alert(' Error generating report');
     }
   };
 

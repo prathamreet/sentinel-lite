@@ -1,140 +1,19 @@
-# 🛡️ LogWatch Sentinel - Offline Log Analysis & Threat Detection System
-
-<div align="center">
-
-![LogWatch Sentinel Banner](https://via.placeholder.com/800x200/1e293b/60a5fa?text=LogWatch+Sentinel)
-
-**A portable, self-contained log analysis tool for air-gapped and isolated networks**
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![Node 16+](https://img.shields.io/badge/node-16+-green.svg)](https://nodejs.org/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
-
-[Features](#-key-features) • [Demo](#-live-demo) • [Installation](#-installation) • [Usage](#-usage) • [Architecture](#-architecture) • [Contributing](#-contributing)
-
-</div>
-
----
-
-## 📖 **Table of Contents**
-
-- [Problem Statement](#-problem-statement)
-- [Key Features](#-key-features)
-- [Live Demo](#-live-demo)
-- [Installation](#-installation)
-- [Usage](#-usage)
-- [Architecture](#-architecture)
-- [Attack Detection Rules](#-attack-detection-rules)
-- [Screenshots](#-screenshots)
-- [Technology Stack](#-technology-stack)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Team](#-team)
-
----
-
-## 🎯 **Problem Statement**
-
-### The Challenge
-
-70% of critical infrastructure (military bases, power plants, hospitals, financial institutions) operate on **air-gapped networks** - completely isolated from the internet for security reasons.
-
-When cyberattacks occur in these environments:
-- ❌ Cloud-based SIEM tools (Splunk, ELK) are unavailable
-- ❌ Threat intelligence feeds cannot be accessed
-- ❌ Security teams manually grep through millions of log lines
-- ❌ Attacks go undetected for hours or days
-
-**Real-world impact:**
-- In 2021, a major hospital's security team took 6 hours to detect a ransomware attack because they couldn't analyze logs efficiently
-- Colonial Pipeline attack showed how critical infrastructure needs offline security capabilities
-
-### Our Solution
-
-**LogWatch Sentinel** is a portable, offline-capable log analysis system that provides:
-- ✅ Real-time threat detection without internet
-- ✅ Multi-source log aggregation (Syslog, Windows, Apache)
-- ✅ Visual attack timeline reconstruction
-- ✅ Executive-friendly reporting
-- ✅ Runs from a USB stick - no installation required
-
----
-
-## ✨ **Key Features**
-
-### 🔍 **Real-Time Log Monitoring**
-- Monitors multiple log sources simultaneously
-- Live WebSocket updates to dashboard
-- Processes 10,000+ log entries per second
-- Zero-lag alert notifications
-
-### 🚨 **Advanced Threat Detection**
-- **8 Built-in Attack Patterns:**
-  - Brute Force Attacks
-  - Privilege Escalation
-  - SQL Injection Attempts
-  - Port Scanning
-  - Data Exfiltration
-  - Ransomware Indicators
-  - After-Hours Access
-  - Suspicious File Deletion
-
-- **Detection Techniques:**
-  - Rule-based pattern matching
-  - Behavioral heuristics
-  - Threshold-based anomaly detection
-  - MITRE ATT&CK mapping (Phase 2)
-
-### 📊 **Interactive Dashboard**
-- Live security score (0-100)
-- Real-time alert feed
-- Attack timeline visualization
-- Threat distribution charts
-- Searchable log table
-
-### 🎬 **Attack Timeline Reconstruction**
-- Automatically builds narrative of attack stages
-- Maps to cyber kill chain phases:
-  1. Reconnaissance
-  2. Initial Access
-  3. Privilege Escalation
-  4. Defense Evasion
-  5. Exfiltration
-  6. Impact
-
-### 📄 **Executive Reporting**
-- One-click PDF report generation
-- Non-technical language summaries
-- Severity breakdowns
-- Actionable recommendations
-
-### 🔌 **100% Offline Operation**
-- No internet dependency
-- Local SQLite database
-- Embedded threat signatures
-- Portable execution (USB bootable)
-
-### 🖥️ **Cross-Platform Support**
-- ✅ Windows 10/11
-- ✅ Linux (Ubuntu, CentOS, Kali)
-- ✅ macOS (Intel & Apple Silicon)
-
----
-
-## 🎬 **Live Demo**
-
-### Quick Start (3 Commands)
-
-```bash
-# Terminal 1 - Start Mock Attack Server
-cd backend
-python mockserver.py continuous
-
-# Terminal 2 - Start Backend
-python app.py
-
-# Terminal 3 - Start Frontend
+### frontend (terminal 1)
+```
 cd frontend
+npm install
 npm start
+```
+
+### backend (terminal 2)
+```
+cd backend
+pip install -r requirements.txt
+python app.py
+```
+
+### live mock logs (terminal 3)
+```
+cd backend
+python mockserver.py demo
+```
