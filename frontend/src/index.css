@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +15,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #0f172a;
   color: #e2e8f0;
+  overflow: hidden;
 }
 
 code {
