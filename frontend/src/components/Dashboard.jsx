@@ -16,7 +16,7 @@ function Dashboard({ stats, alerts, logs }) {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-slate-400 text-sm font-medium">Total Logs</h3>
-              <p className="text-3xl font-bold text-white mt-2">{logs.length.toLocaleString()}</p>
+              <p className="text-3xl font-bold text-white mt-2">{stats.total_logs?.toLocaleString() || logs.length.toLocaleString()}</p>
             </div>
             <div className="text-slate-500">
               {/* <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
