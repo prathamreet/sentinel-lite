@@ -69,7 +69,7 @@ if __name__ == '__main__':
         for line in lines:
             print(f"  {line.strip()}")
     
-    monitor = LogMonitor('../logs', print_callback)
+    monitor = LogMonitor('../log/logs', print_callback)
     monitor.start()
     
     try:

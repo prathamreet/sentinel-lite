@@ -20,7 +20,7 @@ detector = ThreatDetector()
 report_gen = ReportGenerator()
 
 # Log monitoring
-LOG_DIR = '../logs'
+LOG_DIR = '../log/logs'
 os.makedirs(LOG_DIR, exist_ok=True)
 
 # Stats
@@ -82,7 +82,7 @@ def process_new_logs(lines, filename):
     # IMPORTANT: Send complete stats
     socketio.emit('stats_update', live_stats)
     
-    print(f"📊 Processed {len(parsed_logs)} logs, {len(alerts)} alerts | Stats: {live_stats}")
+    print(f" Processed {len(parsed_logs)} logs, {len(alerts)} alerts | Stats: {live_stats}")
 
 
 # Start log monitoring in background
@@ -135,7 +135,13 @@ def get_logs():
         severity = request.args.get('severity', None)
         
         logs = db.get_logs(limit=limit, severity=severity)
-        return jsonify(logs)
+        total_count = len(db.get_all_logs())
+        
+        return jsonify({
+            'logs': logs,
+            'total_count': total_count,
+            'returned_count': len(logs)
+        })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -181,18 +187,18 @@ def get_stats():
 
 @socketio.on('connect')
 def handle_connect():
-    print('🔌 Client connected')
+    print(' Client connected')
     emit('connection_response', {'status': 'connected'})
 
 @socketio.on('disconnect')
 def handle_disconnect():
-    print('🔌 Client disconnected')
+    print(' Client disconnected')
 
 if __name__ == '__main__':
-    print("🛡️  LogWatch Sentinel Backend Starting...")
-    print("📡 Server running on http://localhost:5000")
-    print("🔄 WebSocket enabled for live updates")
-    print("👁️  Starting log monitoring...")
+    print("  LogWatch Sentinel Backend Starting...")
+    print(" Server running on http://localhost:5000")
+    print(" WebSocket enabled for live updates")
+    print("  Starting log monitoring...")
     
     # Start log monitor
     monitor.start()
@@ -200,5 +206,5 @@ if __name__ == '__main__':
     try:
         socketio.run(app, debug=True, port=5000, allow_unsafe_werkzeug=True)
     except KeyboardInterrupt:
-        print("\n🛑 Stopping server...")
+        print("\nStopping server...")
         monitor.stop()

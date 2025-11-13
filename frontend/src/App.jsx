@@ -141,13 +141,13 @@ function App() {
         axios.get(`${API_URL}/timeline`)
       ]);
 
-      setLogs(logsRes.data || []);
+      setLogs(logsRes.data.logs || logsRes.data || []);
       setAlerts(analysisRes.data.alerts || []);
       
       // Properly structure stats
       const statsData = analysisRes.data.stats || {};
       setStats({
-        total_logs: analysisRes.data.total_logs || 0,
+        total_logs: logsRes.data.total_count || analysisRes.data.total_logs || 0,
         total_alerts: (analysisRes.data.alerts || []).length,
         alerts_by_severity: statsData.by_severity || { CRITICAL: 0, HIGH: 0, MEDIUM: 0 },
         by_severity: statsData.by_severity || { CRITICAL: 0, HIGH: 0, MEDIUM: 0 },

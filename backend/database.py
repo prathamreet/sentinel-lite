@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 
 class Database:
-    def __init__(self, db_path='logwatch.db'):
+    def __init__(self, db_path='../database/logwatch.db'):
         self.db_path = db_path
         self.init_db()
     

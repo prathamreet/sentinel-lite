@@ -1,6 +1,6 @@
-# 📋 Problem Statement - LogWatch Sentinel
+#  Problem Statement - LogWatch Sentinel
 
-## 🎯 **Executive Summary**
+##  **Executive Summary**
 
 **Challenge:** Design and develop a portable, self-contained log analysis tool that can collect, parse, and analyze system and network logs within isolated networks — ensuring cyber threat detection, local situational awareness, and offline functionality, without dependence on cloud or internet services.
 
@@ -8,7 +8,7 @@
 
 ---
 
-## 🌐 **Context & Background**
+##  **Context & Background**
 
 ### The Air-Gapped Environment Reality
 

@@ -8,7 +8,7 @@ import os
 
 class ReportGenerator:
     def __init__(self):
-        self.output_dir = 'reports'
+        self.output_dir = '../database/reports'
         os.makedirs(self.output_dir, exist_ok=True)
     
     def generate_pdf(self, logs, alerts):
@@ -28,7 +28,7 @@ class ReportGenerator:
             textColor=colors.HexColor('#1e3a8a'),
             spaceAfter=30
         )
-        story.append(Paragraph("🛡️ LogWatch Sentinel - Security Analysis Report", title_style))
+        story.append(Paragraph(" LogWatch Sentinel - Security Analysis Report", title_style))
         story.append(Spacer(1, 12))
         
         # Summary

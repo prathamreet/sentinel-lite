@@ -14,6 +14,6 @@ python app.py
 
 ### live mock logs (terminal 3)
 ```
-cd backend
-python mockserver.py demo
+cd log
+python mock-log-server.py demo
 ```

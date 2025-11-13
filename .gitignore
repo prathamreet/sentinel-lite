@@ -54,7 +54,7 @@ coverage.xml
 *.sqlite3
 backend/uploads/
 backend/reports/
-logs/
+log/logs/
 log/
 tmp/
 Temp/
