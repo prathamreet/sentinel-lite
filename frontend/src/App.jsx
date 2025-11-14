@@ -27,29 +27,26 @@ function App() {
   // WebSocket listeners
   useEffect(() => {
     socket.on('connect', () => {
-      console.log(' Connected to live server');
+      console.log('Connected to live server');
       setConnectionStatus('connected');
     });
 
     socket.on('disconnect', () => {
-      console.log(' Disconnected from server');
+      console.log('Disconnected from server');
       setConnectionStatus('disconnected');
     });
 
     socket.on('new_alerts', (data) => {
-      console.log(' New alerts received:', data);
+      console.log('New alerts received:', data);
       
-      // Add new alerts to existing ones
       setAlerts(prev => {
         const combined = [...data.alerts, ...prev];
-        return combined.slice(0, 100); // Keep last 100
+        return combined.slice(0, 100);
       });
       
-      // Update stats - CRITICAL FIX
       setStats(prevStats => {
         const newStats = { ...prevStats };
         
-        // Update alert counts by severity
         data.alerts.forEach(alert => {
           const severity = alert.severity;
           if (newStats.alerts_by_severity) {
@@ -59,22 +56,19 @@ function App() {
             newStats.by_severity[severity] = (newStats.by_severity[severity] || 0) + 1;
           }
           
-          // Update type counts
           if (newStats.by_type) {
             newStats.by_type[alert.type] = (newStats.by_type[alert.type] || 0) + 1;
           }
         });
         
-        // Update total alerts
         newStats.total_alerts = (newStats.total_alerts || 0) + data.alerts.length;
         
         return newStats;
       });
       
-      // Show notification for critical alerts
       const critical = data.alerts.filter(a => a.severity === 'CRITICAL');
       if (critical.length > 0) {
-        showNotification(`🚨 ${critical.length} CRITICAL ALERT(S) DETECTED!`);
+        showNotification(`${critical.length} CRITICAL ALERT(S) DETECTED!`);
       }
     });
 
@@ -83,10 +77,9 @@ function App() {
       
       setLogs(prev => {
         const combined = [...data.logs, ...prev];
-        return combined.slice(0, 1000); // Keep last 1000
+        return combined.slice(0, 1000);
       });
       
-      // Update log count
       setStats(prevStats => ({
         ...prevStats,
         total_logs: (prevStats.total_logs || 0) + data.logs.length
@@ -94,13 +87,11 @@ function App() {
     });
 
     socket.on('stats_update', (data) => {
-      console.log(' Stats update received:', data);
+      console.log('Stats update received:', data);
       
-      // Merge with existing stats to ensure all fields are present
       setStats(prevStats => ({
         ...prevStats,
         ...data,
-        // Ensure by_severity exists for charts
         by_severity: data.alerts_by_severity || data.by_severity || prevStats.by_severity || {},
         by_type: data.by_type || prevStats.by_type || {}
       }));
@@ -117,7 +108,7 @@ function App() {
 
   const showNotification = (message) => {
     if (window.Notification && Notification.permission === 'granted') {
-      new Notification('LogWatch Sentinel', { body: message });
+      new Notification('Sentinel-LM', { body: message });
     }
   };
 
@@ -144,7 +135,6 @@ function App() {
       setLogs(logsRes.data.logs || logsRes.data || []);
       setAlerts(analysisRes.data.alerts || []);
       
-      // Properly structure stats
       const statsData = analysisRes.data.stats || {};
       setStats({
         total_logs: logsRes.data.total_count || analysisRes.data.total_logs || 0,
@@ -183,9 +173,9 @@ function App() {
           by_type: {}
         });
         setTimeline([]);
-        alert(' All data cleared');
+        alert('All data cleared');
       } catch (error) {
-        alert(' Error clearing data');
+        alert('Error clearing data');
       }
     }
   };
@@ -198,22 +188,21 @@ function App() {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `LogWatch_Report_${Date.now()}.pdf`);
+      link.setAttribute('download', `Sentinel_Report_${Date.now()}.pdf`);
       document.body.appendChild(link);
       link.click();
       link.remove();
     } catch (error) {
-      alert(' Error generating report');
+      alert('Error generating report');
     }
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden flex flex-col">
+    <div className="h-screen bg-slate-900 overflow-hidden flex flex-col">
       {/* Header */}
-      <header className="bg-slate-800 px-8 py-4 flex justify-between items-center border-b border-slate-600">
+      <header className="bg-slate-800 border-b border-slate-700 px-6 py-4 flex justify-between items-center flex-shrink-0">
         <div className="flex items-center space-x-6">
-          <h1 className="text-2xl font-bold text-white">LogWatch Sentinel</h1>
-          <span className="text-sm text-slate-400 font-medium">v1.0.0</span>
+          <h1 className="text-lg font-bold text-white uppercase tracking-wide">Sentinel-LM</h1>
           <div className="flex items-center space-x-2">
             <div className={`w-2 h-2 rounded-full ${
               connectionStatus === 'connected' 
@@ -222,27 +211,27 @@ function App() {
                 ? 'bg-yellow-500'
                 : 'bg-red-500'
             }`}></div>
-            <span className="text-sm text-slate-300 font-medium">
-              {connectionStatus === 'connected' ? 'LIVE' : connectionStatus === 'connecting' ? 'CONNECTING' : 'OFFLINE'}
+            <span className="text-xs text-slate-400 uppercase tracking-wider font-medium">
+              {connectionStatus === 'connected' ? 'Live' : connectionStatus === 'connecting' ? 'Connecting' : 'Offline'}
             </span>
           </div>
         </div>
-        <div className="flex space-x-3">
+        <div className="flex space-x-2">
           <button 
             onClick={handleRefresh} 
-            className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded font-medium transition-colors duration-200"
+            className="px-3 py-1.5 bg-slate-700 border border-slate-600 text-white text-sm rounded hover:bg-slate-600"
           >
             Refresh
           </button>
           <button 
             onClick={downloadReport} 
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors duration-200"
+            className="px-3 py-1.5 bg-slate-700 border border-slate-600 text-white text-sm rounded hover:bg-slate-600"
           >
             Export Report
           </button>
           <button 
             onClick={handleClearData} 
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition-colors duration-200"
+            className="px-3 py-1.5 bg-slate-700 border border-slate-600 text-white text-sm rounded hover:bg-slate-600"
           >
             Clear Data
           </button>
@@ -250,28 +239,28 @@ function App() {
       </header>
 
       {/* Navigation Tabs */}
-      <nav className="bg-slate-800 px-8 flex space-x-1 border-b border-slate-600 flex-shrink-0">
+      <nav className="bg-slate-800 border-b border-slate-700 px-6 flex space-x-1 flex-shrink-0">
         <button
-          className={`px-6 py-3 font-medium transition-all duration-200 border-b-2 ${
+          className={`px-5 py-3 text-sm font-medium uppercase tracking-wide border-b-2 transition-colors ${
             activeTab === 'overview' 
-              ? 'text-white border-blue-500 bg-slate-700' 
-              : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-700'
+              ? 'text-white border-slate-500' 
+              : 'text-slate-400 border-transparent hover:text-slate-300'
           }`}
           onClick={() => setActiveTab('overview')}
         >
           Overview
         </button>
         <button
-          className={`px-6 py-3 font-medium transition-all duration-200 border-b-2 relative ${
+          className={`px-5 py-3 text-sm font-medium uppercase tracking-wide border-b-2 transition-colors relative ${
             activeTab === 'security' 
-              ? 'text-white border-blue-500 bg-slate-700' 
-              : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-700'
+              ? 'text-white border-slate-500' 
+              : 'text-slate-400 border-transparent hover:text-slate-300'
           }`}
           onClick={() => setActiveTab('security')}
         >
           Security Analysis
           {alerts.filter(a => a.severity === 'CRITICAL').length > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded font-semibold">
               {alerts.filter(a => a.severity === 'CRITICAL').length}
             </span>
           )}
@@ -282,29 +271,25 @@ function App() {
       <main className="flex-1 overflow-hidden">
         {loading && (
           <div className="flex justify-center items-center h-full">
-            <div className="text-xl text-slate-400">Loading...</div>
+            <div className="text-sm text-slate-500">Loading data...</div>
           </div>
         )}
         {!loading && activeTab === 'overview' && (
           <div className="h-full flex">
-            {/* Dashboard Section */}
-            <div className="w-1/2 p-6 border-r border-slate-600 overflow-y-auto">
+            <div className="w-1/2 p-5 border-r border-slate-700 overflow-y-auto">
               <Dashboard stats={stats} alerts={alerts} logs={logs} />
             </div>
-            {/* Live Logs Section */}
-            <div className="w-1/2 p-6 overflow-y-auto">
+            <div className="w-1/2 p-5 overflow-y-auto">
               <LogTable logs={logs} />
             </div>
           </div>
         )}
         {!loading && activeTab === 'security' && (
           <div className="h-full flex">
-            {/* Alerts Section */}
-            <div className="w-1/2 p-6 border-r border-slate-600 overflow-y-auto">
+            <div className="w-1/2 p-5 border-r border-slate-700 overflow-y-auto">
               <AlertPanel alerts={alerts} />
             </div>
-            {/* Attack Timeline Section */}
-            <div className="w-1/2 p-6 overflow-y-auto">
+            <div className="w-1/2 p-5 overflow-y-auto">
               <AttackTimeline timeline={timeline} />
             </div>
           </div>
