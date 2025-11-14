@@ -2,60 +2,57 @@ import React from 'react';
 
 function AttackTimeline({ timeline }) {
   return (
-    <div className="space-y-6 h-full flex flex-col">
-      <h2 className="text-2xl font-bold text-white flex-shrink-0">Attack Timeline</h2>
+    <div className="space-y-4 h-full flex flex-col">
+      <h2 className="text-base font-semibold text-white uppercase tracking-wide flex-shrink-0">Attack Timeline</h2>
       
       {timeline.length === 0 ? (
-        <div className="bg-slate-800 rounded-xl p-8 text-center border border-slate-600">
-          <div className="text-slate-500 mb-4">
-            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <h3 className="text-xl font-semibold text-slate-300 mb-2">No attack patterns detected</h3>
-          <p className="text-slate-400">Timeline monitoring active</p>
+        <div className="bg-slate-800 rounded border border-slate-700 p-12 text-center">
+          <div className="text-sm text-slate-500 mb-1">No attack patterns detected</div>
+          <div className="text-xs text-slate-600">Timeline monitoring active</div>
         </div>
       ) : (
-        <div className="relative flex-1 min-h-0 overflow-y-auto">
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-slate-600"></div>
-          <div className="space-y-8">
+        <div className="bg-slate-800 rounded border border-slate-700 p-5 flex-1 min-h-0 overflow-y-auto">
+          <div className="space-y-0">
             {timeline.map((event, idx) => (
-              <div key={idx} className="relative flex items-start">
-                <div className={`flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-lg border-4 ${
-                  event.severity === 'CRITICAL' 
-                    ? 'bg-red-500 border-red-400' 
-                    : event.severity === 'HIGH'
-                    ? 'bg-orange-500 border-orange-400'
-                    : 'bg-blue-500 border-blue-400'
-                }`}>
-                  {idx + 1}
-                </div>
-                <div className="ml-6 flex-1">
-                  <div className={`bg-slate-800 rounded-xl p-6 border-l-4 ${
-                    event.severity === 'CRITICAL' 
-                      ? 'border-red-500 bg-red-900/10' 
-                      : event.severity === 'HIGH'
-                      ? 'border-orange-500 bg-orange-900/10'
-                      : 'border-blue-500 bg-blue-900/10'
-                  } hover:shadow-xl transition-all duration-200`}>
-                    <div className="flex justify-between items-start mb-3">
-                      <div className="text-sm text-slate-400 font-mono">{event.time}</div>
-                      <span className={`px-2 py-1 rounded text-xs font-bold ${
+              <div key={idx} className="relative">
+                {/* Timeline connector line */}
+                {idx !== timeline.length - 1 && (
+                  <div className="absolute left-3 top-8 bottom-0 w-px bg-slate-700"></div>
+                )}
+                
+                <div className="flex gap-4 pb-6">
+                  {/* Timeline marker */}
+                  <div className="flex-shrink-0 flex flex-col items-center">
+                    <div className={`w-6 h-6 rounded-full border-2 bg-slate-900 flex items-center justify-center ${
+                      event.severity === 'CRITICAL' 
+                        ? 'border-red-500' 
+                        : event.severity === 'HIGH'
+                        ? 'border-orange-500'
+                        : 'border-blue-500'
+                    }`}>
+                      <div className={`w-2 h-2 rounded-full ${
                         event.severity === 'CRITICAL' 
-                          ? 'bg-red-500 text-white' 
+                          ? 'bg-red-500' 
                           : event.severity === 'HIGH'
-                          ? 'bg-orange-500 text-white'
-                          : 'bg-blue-500 text-white'
-                      }`}>
-                        {event.severity}
-                      </span>
+                          ? 'bg-orange-500'
+                          : 'bg-blue-500'
+                      }`}></div>
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-3">{event.stage}</h3>
-                    <p className="text-slate-300 text-lg mb-4">{event.description}</p>
+                  </div>
+
+                  {/* Event content */}
+                  <div className="flex-1 pt-0">
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="text-xs text-slate-500 font-mono">{event.time}</span>
+                      <span className="text-xs text-slate-600 font-mono">#{idx + 1}</span>
+                    </div>
+                    
+                    <h3 className="text-sm font-semibold text-white mb-1">{event.stage}</h3>
+                    <p className="text-sm text-slate-400 mb-3">{event.description}</p>
+                    
                     {event.details && (
-                      <div className="bg-slate-700 rounded-lg p-4">
-                        <div className="text-slate-400 text-sm font-medium mb-2">Additional Details</div>
-                        <div className="text-slate-200">{event.details}</div>
+                      <div className="bg-slate-900 rounded border border-slate-700 p-3 text-xs text-slate-400">
+                        {event.details}
                       </div>
                     )}
                   </div>
